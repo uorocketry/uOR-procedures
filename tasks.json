@@ -1,0 +1,35 @@
+{
+    "Captain":[
+        "Bypass Baryon Field",
+        "Harass Innocent Ferengi",
+        "Meet with Admiral",
+        "Drink Earl Gray",
+        "Say Engage",
+        "Promote Paris"
+    ],
+    "Commander":[
+        "Play Poker",
+        "Get a drink in 10-forward",
+        "Learn how to sit down",
+        "Pick up an ensign"
+    ],
+    "Helm":[
+        "Regain Control",
+        "Navigate Asteroids",
+        "Reverse Thrust",
+        "Engage Warp"    ],
+    "Tactical":[
+        "Full photon spread",
+        "Charge phaser banks",
+        "Run a level 3 diagnostic on the phaser array",
+        "Convert the holosuite into a training arena"
+    ],
+    "Engineering":[
+    "Tachyon Sweep",
+    "Reroute power through the phase inducer",
+    "Run regression pattern matching",
+    "Level 1 Diagnostic",
+    "Reverse Polarity",
+    "Realign Warp Matrix"
+    ]
+}

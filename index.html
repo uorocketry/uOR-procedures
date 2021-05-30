@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>uORocketry Procedures</title>
+</head>
+<style>
+    body {
+        background-image: url("https://uorocketry.ca/images/icon.png");
+        background-color: #cccccc;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    * {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .roleDropDown {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    
+    ul li {
+        cursor: pointer;
+        position: relative;
+        padding: 2vh 1vw 2vh 8vw;
+        list-style-type: none;
+        background: #e3ffe3;
+        font-size: 3vh;
+        transition: 0.2s;
+    }
+    
+    ul li:nth-child(odd) {
+        background: #ace8ac;
+    }
+    
+    ul li:hover {
+        background: #ddd;
+    }
+    
+    ul li.completed {
+        background: #3a3a3a;
+        color: #fff;
+        text-decoration: line-through;
+    }
+</style>
+
+<body>
+    <form>
+        <select id="roleDropdown" class='roleDropDown'>
+            </select>
+    </form>
+    <ul id="procedureList">
+        <li class='unclickable'>Choose a team</li>
+    </ul>
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io(); //For server communication, socketIO client is passed on initial connection by socketIO server
+        var team = "";
+        var roleDropdown = document.getElementById('roleDropdown')
+        var tasks = document.getElementById('procedureList')
+        tasks.addEventListener('click', function(task) {
+            if (task.target.tagName === 'LI' && !task.target.classList.contains('unclickable')) { //if its a list item and isn't the "Choose your team" item
+                finishTask = Array.from(tasks.children).indexOf(task.target) //Grab the index, might not align with server's task object array
+                socket.emit("task-complete", [team, finishTask]) //Tell server the task is done, allow server side to confirm and show task complete
+            }
+
+        }, false);
+        socket.on("teams", (teams) => { //Initial connection packet with team list to populate dropdown
+            for (teamNum in teams) {
+                let team = teams[teamNum] //let means block scope, doesn't interfer with higher team variable
+                var newTeam = document.createElement('option');
+                newTeam.text = team;
+                newTeam.classList.add("role");
+                roleDropdown.add(newTeam)
+            }
+        })
+        socket.on("task-finish", ([teamName, taskNumber]) => { //Server side event triggered from client's task-complete
+            if (team === teamName) { //If the task is relevant
+                document.getElementById(taskNumber).classList.toggle('completed') //Set to complete in real time
+            }
+            //If the task isn't for your team, the task will be in the correct state when you switch 
+            //Because the task list is populated with current status from the server 
+
+        })
+        socket.on("tasks", (t) => {
+            while (tasks.lastElementChild) {
+                tasks.removeChild(tasks.lastElementChild)
+            } //Remove tasks from previous team view
+            for (taskNumber in t) {
+                task = t[taskNumber]
+                if (t.hasOwnProperty(taskNumber)) {
+                    newTask = document.createElement('li')
+                    newTask.appendChild(document.createTextNode(task['Task']));
+                    if (task['Completed'] === 1) {
+                        newTask.classList.toggle('completed'); //Add completed class to completed tasks so it shows
+                    }
+                    newTask.setAttribute('id', taskNumber)
+                    tasks.appendChild(newTask)
+                }
+            }
+        })
+        roleDropdown.addEventListener('change', function(e) {
+            e.preventDefault();
+            team = roleDropdown.options[roleDropdown.selectedIndex].text //sets team name
+            socket.emit('role-request', team)
+        })
+    </script>
+</body>
+
+</html>
