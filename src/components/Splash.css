@@ -1,0 +1,45 @@
+.logo {
+    height: 25vh;
+    pointer-events: none;
+    padding: none;
+  
+  }
+  .Login{
+    margin-top:5vh;
+    margin-left:auto;
+    margin-right: auto;
+    text-align: center;
+    color: white;
+    font-size: 2vh;
+    font-family: 'Lato', sans-serif;
+    background-color: #2c3e5093;
+    border-radius: 2vh;
+    padding: 5vh;
+    width: 25vw;
+    height: fit-content;
+    padding: none;
+    flex-direction: column;
+    flex-wrap:wrap;
+  }
+  .Background{
+    display:flex;
+    background-color: #f5f5f5;
+    height: 100vh;
+    width: 100vw;
+    padding: none;
+  }
+  .roleList{
+    min-width: 10vw;
+    padding: none;
+  }
+  .nameField{
+    min-width: 10vw;
+    padding: none;
+  }
+  .loginButton{
+    min-width: 5vw;
+    padding: none;
+  }
+  .break{
+      margin:3vh;
+  }
