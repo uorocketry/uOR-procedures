@@ -8,7 +8,6 @@ function App() {
   return (
     <Router>
       <Route path='/' component={Splash} />
-      {/* <Route path='/tasks' component={Tasks} /> */}
     </Router>
   );
 }
